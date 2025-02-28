@@ -3,6 +3,10 @@ const cors = require('cors');
 const pool = require('./database'); // Import database connection
 require('dotenv').config();
 
+const { createUserTable } = require('./models/User');
+const { createProductTable } = require('./models/Product');
+const authRoutes = require('./routes/authRoutes'); // Import authentication routes
+
 const app = express();
 
 // Middleware
@@ -14,10 +18,26 @@ app.get('/', (req, res) => {
     res.send('API is running...');
 });
 
+// Authentication Routes
+app.use('/api/auth', authRoutes);
+
 // Test Database Connection
 pool.connect()
     .then(() => console.log('✅ Connected to PostgreSQL'))
     .catch(err => console.error('❌ Database connection error:', err));
+
+// Initialize database tables
+const initDB = async () => {
+    try {
+        await createUserTable();
+        await createProductTable();
+        console.log('✅ Database tables are set up');
+    } catch (error) {
+        console.error('❌ Error initializing database:', error);
+    }
+};
+
+initDB();
 
 // Server listening
 const PORT = process.env.PORT || 5000;
