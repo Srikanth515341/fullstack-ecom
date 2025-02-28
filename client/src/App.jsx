@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useContext } from "react";
 import Home from "./pages/Home";
 import Products from "./pages/Products";
@@ -6,31 +6,7 @@ import ManageProduct from "./pages/ManageProduct";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import AuthProvider, { AuthContext } from "./context/AuthContext";
-
-const Navbar = () => {
-    const { user, logout } = useContext(AuthContext);
-    const navigate = useNavigate();
-
-    const handleLogout = () => {
-        logout();
-        navigate("/login"); // Redirect to login after logout
-    };
-
-    return (
-        <nav>
-            <Link to="/">Home</Link> | <Link to="/products">Products</Link> |
-            {!user ? (
-                <>
-                    <Link to="/login">Login</Link> | <Link to="/signup">Signup</Link>
-                </>
-            ) : (
-                <button onClick={handleLogout} style={{ marginLeft: "10px", cursor: "pointer" }}>
-                    Logout
-                </button>
-            )}
-        </nav>
-    );
-};
+import Navigation from "./components/Navigation"; // ✅ Correct Import
 
 const ProtectedRoute = ({ children }) => {
     const { user } = useContext(AuthContext);
@@ -39,9 +15,9 @@ const ProtectedRoute = ({ children }) => {
 
 const App = () => {
     return (
-        <Router>
-            <AuthProvider>
-                <Navbar />
+        <Router>  {/* ✅ Router MUST wrap everything */}
+            <AuthProvider> {/* ✅ AuthProvider inside Router */}
+                <Navigation />  {/* ✅ Navbar inside Router */}
                 <Routes>
                     <Route path="/" element={<Home />} />
                     <Route path="/products" element={<ProtectedRoute><Products /></ProtectedRoute>} />
