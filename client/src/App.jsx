@@ -1,10 +1,19 @@
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import Home from "./pages/Home";
+import Products from "./pages/Products";
+
 const App = () => {
-  return (
-    <div>
-      <h1>Welcome to ECOM360</h1>
-      <p>Your online store is coming soon!</p>
-    </div>
-  );
+    return (
+        <Router>
+            <nav>
+                <Link to="/">Home</Link> | <Link to="/products">Products</Link>
+            </nav>
+            <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/products" element={<Products />} />
+            </Routes>
+        </Router>
+    );
 };
 
 export default App;
