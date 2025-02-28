@@ -6,6 +6,7 @@ require('dotenv').config();
 const { createUserTable } = require('./models/User');
 const { createProductTable } = require('./models/Product');
 const authRoutes = require('./routes/authRoutes'); // Import authentication routes
+const productRoutes = require('./routes/productRoutes'); // Import product routes
 
 const app = express();
 
@@ -20,6 +21,9 @@ app.get('/', (req, res) => {
 
 // Authentication Routes
 app.use('/api/auth', authRoutes);
+
+// Product Routes
+app.use('/api/products', productRoutes);
 
 // Test Database Connection
 pool.connect()
